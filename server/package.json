@@ -1,0 +1,27 @@
+{
+  "name": "Katarzis",
+  "version": "1.0.0",
+  "description": "Katarzis",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cheerio": "~0.17.0",
+    "express": "~3.1.0",
+    "request": "latest",
+    "mongodb": "^2.1.2"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": ""
+}

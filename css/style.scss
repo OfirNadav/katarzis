@@ -1,0 +1,292 @@
+@import url(//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css);
+@import url(//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
+@import '../lib/add2Homescreen/style/addtohomescreen.css';
+@import '../lib/AngularJS-Toaster-master/toaster';
+@import 'variables';
+@import 'fonts';
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: $bg-color;
+  direction: rtl;
+  text-align: center;
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */
+}
+
+section.parent {
+  position:absolute;
+  width: 100%;
+  height: 95%;
+  margin: 1% auto;
+  font-family: "helvetica neue", helvetica, arial, sans-serif;
+  color: $font-color;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+
+  .child {
+    //outline: 1px solid red;
+  }
+
+  .title {
+    flex: 1;
+    margin: 0;
+    font-family: 'RochelePointRegular';
+    font-size: 4em;
+    color: $main-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    .secColor{
+      color:$secondary-color;
+    }
+  }
+
+  .direction-info {
+      flex: 1;
+      font-family: 'StampRegular';
+      font-size: 1.3em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      flex-wrap: nowrap;
+
+      .symbol {
+        width: 100px;
+        color: $secondary-color;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-wrap: nowrap;
+        .fa-long-arrow-down:before {
+          font-family: "fontawesome";
+          content: "\f175";
+        }
+        .fa-subway:before {
+          font-family: "fontawesome";
+          content: "\f239";
+        }
+      }
+
+      .origin, .dest {
+        &:hover {
+          text-decoration: underline;
+          color: $main-color;
+          cursor: pointer;
+        }
+      }
+      .list{
+        border-radius: 5px;
+      }
+    } // end direction-info
+
+  .btns-style{
+    flex: 2;
+    padding: 4%;
+
+    .btnGo {
+      margin: auto;
+      list-style: none;
+      position: relative;
+      width: 150px;
+      height: 150px;
+
+      @-moz-keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(-360deg);
+        }
+      }
+
+      @-webkit-keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(-360deg);
+        }
+      }
+
+      @-o-keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(-360deg);
+        }
+      }
+
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(-360deg);
+        }
+      }
+
+      .round {
+        text-decoration: none;
+        outline: none;
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        font-size: 2.7em;
+        font-weight: bold;
+        letter-spacing: -.065em;
+        font-family: "Hammersmith One", sans-serif;
+        -webkit-transition: all .25s ease-in-out;
+        -o-transition: all .25s ease-in-out;
+        -moz-transition: all .25s ease-in-out;
+        transition: all .25s ease-in-out;
+        border-radius: 300px;
+        z-index: 1;
+        border: 10px solid;
+      }
+
+      .isOn {
+        background: url("../img/trainBg.gif") no-repeat center;
+        border-radius: 300px;
+        text-decoration: none;
+        outline: none;
+        width: 200px;
+        height: 200px;
+        left: -15%;
+        transform: rotate(-360deg);
+      }
+
+      .bgBtn {
+        background-color: $btn-bg-color;
+        color: $btn-font-color;
+        border-color: $btn-border-color;
+
+        &:hover {
+          color: $btn-font-hover-color;
+          background-color: $btn-hover-color;
+        }
+      }
+
+    } // end btnGo
+
+    .countDown {
+      #canvas {
+        transform: rotate(-90deg);
+        background: $bg-color;
+        width: 200px;
+        height: 200px;
+        border-radius: 140px;
+        border: 10px solid $canvas-border-color;
+      }
+
+      .clock {
+        width: 200px;
+        height: 200px;
+        display: inline-block;
+        padding-top: 70px;
+        position: absolute;
+        z-index: 100;
+
+        .clk_minutes {
+          margin: auto;
+          font-weight: bold;
+          font-size: 2.2em;
+        }
+        .clk_hours {
+          margin: -30px auto auto 20px;
+          font-size: 1.1em;
+        }
+        .clk_next {
+          font-size: 1.1em;
+        }
+      }
+
+      .nextTrain {
+        color: $main-color;
+        font-weight: bold;
+        margin: auto;
+        font-size: 1.1em;
+      }
+
+      .noTrain {
+        color: $secondary-color;
+        font-weight: bold;
+        margin: auto;
+        font-size: 1.5em;
+      }
+    } // end countDown
+  }
+
+  .about {
+    flex: 0.5;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    flex-wrap: nowrap;
+    .text-muted{
+      margin: 0 0.5em;
+    }
+  }
+
+  .modal-body{
+    background-color: $bg-color;
+    color: $font-color;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    //border-radius: 20px;
+
+    .modalHeader{
+      display: flex;
+      align-items: center;
+      img{
+        margin-right: 0.3em;
+        height: 3em;
+      }
+      .modalTitle{
+        @extend .title;
+        font-family: 'RochelePointRegular';
+        font-size: 2.1em;
+      }
+    }
+    hr{
+      margin: 2% auto;
+      width: 100%;
+    }
+    .modalInfo {
+      line-height: 120%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-content: center;
+      align-items: center;
+      strong {
+        font-size: 1.1em;
+        margin: 3% auto;
+
+      }
+      span{
+        display: block;
+      }
+    }
+    button{
+      margin: 3em;
+      width: 10em;
+    }
+  }
+}
+
