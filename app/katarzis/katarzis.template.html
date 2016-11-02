@@ -1,0 +1,72 @@
+<section class="parent" ng-cloak>
+  <h1 class="container title child">קטר<span class="secColor">זיס</span></h1>
+  <div class="container direction-info child">
+      <div ng-click="vm.openSelect('origin')" class="origin" ng-show="vm.originName" ng-if="!vm.isOriginShown">
+            {{vm.originName}}
+      </div>
+      <select-station direction="vm.dir" on-station-change="vm.stationChanged(stationId)" ng-show="vm.isOriginShown">
+      </select-station>
+
+      <div class="symbol">
+          <i class="fa fa-long-arrow-down"></i>
+          <i class="fa fa-subway"></i>
+          <i class="fa fa-long-arrow-down"></i>
+      </div>
+      <div ng-click="vm.openSelect('dest')" class="dest"
+           ng-show="vm.destStationName"
+           ng-if="!vm.isDestShown">
+          {{vm.destStationName}}
+      </div>
+      <select-station direction="vm.dir"
+                      on-station-change="vm.stationChanged(stationId)"
+                      ng-show="vm.isDestShown">
+      </select-station>
+  </div>
+
+  <div class="container btns-style child">
+      <div class="btnGo" ng-if="vm.newDrivePlan">
+          <button ng-click="vm.getTrainInfo()" class="round bgBtn" ng-class="{'isOn': vm.calculating}">
+              <strong ng-if="!vm.calculating">חפש</strong>
+          </button>
+      </div>
+
+      <div class="countDown" ng-show="!vm.newDrivePlan" ng-cloak>
+          <div class="clock" ng-if="vm.nextTrainTimes.date">
+              <div class="clk_hours" ng-if="vm.nextTrainTimes.date.hours">
+                  {{vm.nextTrainTimes.date.hours > 0 ? vm.nextTrainTimes.date.hours : ''}} שעות
+              </div>
+              <div class="clk_minutes" ng-if="vm.nextTrainTimes.date.minutes">
+                  {{vm.nextTrainTimes.date.minutes > 0 ? vm.nextTrainTimes.date.minutes : ''}} דקות
+              </div>
+              <span class="clk_next" ng-if="vm.nextTrainTimes.date.minutes"> בשעה
+              {{vm.nextTrainTimes.curr | date: 'H:mm'}}
+              </span>
+          </div>
+
+          <div class="clock noTrain" ng-if="!vm.nextTrainTimes.date">
+              <div class="noTrain">לא נמצאו רכבות</div>
+          </div>
+
+          <canvas id="canvas" width="230" height="230">
+              your browser does not support canvas :(
+          </canvas>
+
+          <div class="nextTrain" ng-if="vm.nextTrainTimes.next">
+              <span> ולאחר מכן
+              {{vm.nextTrainTimes.next | date: 'H:mm'}}</span>
+          </div>
+      </div>
+  </div>
+
+  <div class="container about child">
+    <a ng-href="" ng-click="vm.toggleModal()">אודות</a>
+    <span class="text-muted"> | </span>
+   <a ng-href="" ng-click="vm.wipeFavStations()">נקה מועדפים</a>
+    <span class="text-muted"> | </span>
+    <span class="text-muted">copyright 2016 &copy;</span>
+  </div>
+  <modal visible="vm.showModal"></modal>
+  <toaster-container
+          toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-center'}">
+  </toaster-container>
+</section>

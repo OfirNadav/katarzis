@@ -1,62 +1,38 @@
 var cheerio     = require("cheerio"),
     request     = require('request'),
-    assert      = require('assert'),
-    config      = require('./config'),
-    MongoClient = require('mongodb').MongoClient;
+    config      = require('./config');
 
-
-var dbConn = null;
-
-var mongoUrl = config.getMongoUrl();
-//console.log('mongoUrl: ', mongoUrl);
-MongoClient.connect(mongoUrl, function(err, db) {
-  assert.equal(null, err);
-  console.log( 'Connected correctly to MongoDB server.');
-
-  dbConn = db;
-});
-
-// db.close();
-
-
-module.exports.originStation = function (reqTT, cb){
-    getNearestStationId(reqTT, function (nearestStationId) {
-      cb(null, nearestStationId);
-    });
-};
 
 module.exports.nextTrain = function (reqTT, cb){
-    //console.log('nextTrain reqTT: ',reqTT);
-    getNearestStationId(reqTT, function (nearestStationId) {
 
-        var tt = {
-            originStationId: nearestStationId,
-            destStationId: reqTT.destStationId,
-            date: new Date(),
-            nextTrains: []
-        };
+    var tt = {
+        originStationId: reqTT.originStationId,
+        destStationId: reqTT.destStationId,
+        date: new Date(),
+        nextTrains: []
+    };
 
-        //console.log('tt: ', tt);
+    // console.log('tt: ', tt);
 
-        var trainUrl = getTrainUrl(tt);
+    var trainUrl = getTrainUrl(tt);
 
-        download(trainUrl, function(strHtml) {
+    download(trainUrl, function(strHtml) {
 
-          tt.nextTrains = getNextTrainTimestamp(strHtml);
+        tt.nextTrains = getNextTrainTimestamp(strHtml);
 
-          do {
+        do {
             if (tt.nextTrains.length){
-              cb(null, tt);
+                cb(null, tt);
             } else {
-              var newDate = new Date(tt.date);
-              tt.date = newDate.setHours(newDate.getHours() + 1);
-              trainUrl = getTrainUrl(tt);
-              tt.nextTrains = getNextTrainTimestamp(strHtml);
+                var newDate = new Date(tt.date);
+                tt.date = newDate.setHours(newDate.getHours() + 1);
+                trainUrl = getTrainUrl(tt);
+                tt.nextTrains = getNextTrainTimestamp(strHtml);
             }
-          } while (!tt.nextTrains.length);
-        });
+        } while (!tt.nextTrains.length);
     });
 };
+
 
 // format the date as YYYY-MM-DD
 Date.prototype.yyyymmdd = function() {
@@ -147,28 +123,6 @@ function getTrainUrl(tt) {
     return trainUrl;
 }
 
-// Find nearest station by position with Mongodb
-function getNearestStationId(reqTT, cb){
-    //console.log('getNearestStationId reqTT: ', reqTT);
-    if (reqTT.originStationId) {
-        setTimeout(function () {
-          //console.log('Calling CB');
-          cb(reqTT.originStationId);
-        }, 0);
-        return;
-    }
-
-      var colStations = dbConn.collection('stations');
-
-      //console.log('lat: ',reqTT.lat ,' lng: ', reqTT.lng);
-      colStations.find({"location":{$near:{$geometry:
-          {type:"Point", coordinates:[reqTT.lat, reqTT.lng]}, $maxDistance:10000}}}).limit(1)
-          .toArray().then(function(stations) {
-
-              cb(stations[0].stationId);
-      });
-
-}
 // Pull data from downloaded document
 function getNextTrainTimestamp(strHtml){
 

@@ -1,0 +1,20 @@
+{
+  "name": "katarzis",
+  "description": "Find next train... Fast.",
+  "homepage": "https://katarzis.win/",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "~1.5",
+    "angular-bootstrap": "~1.3.2",
+    "angular-ui-router": "^0.3.1",
+    "angular-ui-utils": "bower",
+    "AngularJS-Toaster": "angularjs-toaster#^2.0.0",
+    "bootstrap": "~3",
+    "font-awesome": "fontawesome#^4.5.0",
+    "jquery": "^2.2.1",
+    "jquery-ui": "^1.11.4"
+  },
+  "resolutions": {
+    "angular": "~1.5"
+  }
+}

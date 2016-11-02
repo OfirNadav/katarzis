@@ -1,0 +1,5 @@
+
+<select class="form-control list" ng-model="vm.stationId"
+        ng-options="station.stationId as station.name for station in vm.stations"
+        ng-change = "vm.stationChanged()" required>
+</select>
