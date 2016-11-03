@@ -31,7 +31,7 @@ _site/
 # General
 # =======
 /dump
-*.css
+#*.css
 *.css.map
 *.log
 *.csv
