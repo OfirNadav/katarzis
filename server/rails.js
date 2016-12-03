@@ -1,36 +1,26 @@
-var cheerio     = require("cheerio"),
+var cheerio     = require('cheerio'),
     request     = require('request'),
     config      = require('./config');
 
+var activeCb;
+var tt = {
+    originStationId: null,
+    destStationId: null,
+    date: new Date(),
+    nextTrains: []
+};
 
 module.exports.nextTrain = function (reqTT, cb){
 
-    var tt = {
-        originStationId: reqTT.originStationId,
-        destStationId: reqTT.destStationId,
-        date: new Date(),
-        nextTrains: []
-    };
+    activeCb = cb;
+    tt.originStationId = reqTT.originStationId;
+    tt.destStationId = reqTT.destStationId;
 
     // console.log('tt: ', tt);
 
     var trainUrl = getTrainUrl(tt);
 
-    download(trainUrl, function(strHtml) {
-
-        tt.nextTrains = getNextTrainTimestamp(strHtml);
-
-        do {
-            if (tt.nextTrains.length){
-                cb(null, tt);
-            } else {
-                var newDate = new Date(tt.date);
-                tt.date = newDate.setHours(newDate.getHours() + 1);
-                trainUrl = getTrainUrl(tt);
-                tt.nextTrains = getNextTrainTimestamp(strHtml);
-            }
-        } while (!tt.nextTrains.length);
-    });
+    download(trainUrl, getNextTrainTimestamp);
 };
 
 
@@ -48,7 +38,7 @@ Date.prototype.yyyymmdd = function() {
 function timeStr2Timestamp(timeStr) {
     var result = timeStr.split(':');
 
-    var date = new Date();
+    var date = new Date(tt.date);
     // Seconds part from the timestamp
     var seconds = parseInt(date.getSeconds());
 
@@ -119,7 +109,7 @@ function getTrainUrl(tt) {
     trainUrl = trainUrl.replace('%HoursDeparture%',hours);
     trainUrl = trainUrl.replace('%MinutesDeparture%',minutes);
     trainUrl = trainUrl.replace('%GoingTrainCln%',date.yyyymmdd());
-    //console.log('trainUrl:' ,trainUrl);
+    // console.log('trainUrl:' ,trainUrl);
     return trainUrl;
 }
 
@@ -132,14 +122,23 @@ function getNextTrainTimestamp(strHtml){
 
     for (var i = 0; i < rows.length; i++){
         // trainRowTime will look like: 11:15
-        var trainRowTime = $(rows[i]).children('td').eq(1).text();
-
+        var trainRowTime = $(rows[i]).find('.GridSortDateItemStyle').text();
         // Push to results only future times
         if (Date.parse(timeStr2Timestamp(trainRowTime)) > new Date()){
             timesArray.push(Date.parse(timeStr2Timestamp(trainRowTime)));
         }
     }
-    //console.log('timesArray ',timesArray);
-    return timesArray;
+    // console.log('timesArray ',timesArray);
+
+    if (timesArray.length){
+        tt.nextTrains = timesArray;
+        activeCb(null, tt);
+    } else {
+        var newDate = new Date(tt.date);
+        tt.date = newDate.setHours(newDate.getHours() + 1);
+        var trainUrl = getTrainUrl(tt);
+        download(trainUrl, getNextTrainTimestamp);
+    }
+
 }
 

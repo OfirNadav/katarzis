@@ -15,7 +15,7 @@ app/tests/coverage/
 .bower-*/
 .idea/
 coverage/
-vendor/
+#vendor/
 
 # MEAN.js app and assets
 # ======================
@@ -32,7 +32,7 @@ _site/
 # =======
 /dump
 #*.css
-*.css.map
+#*.css.map
 *.log
 *.csv
 *.dat
