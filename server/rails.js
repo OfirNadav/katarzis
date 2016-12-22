@@ -109,7 +109,7 @@ function getTrainUrl(tt) {
     trainUrl = trainUrl.replace('%HoursDeparture%',hours);
     trainUrl = trainUrl.replace('%MinutesDeparture%',minutes);
     trainUrl = trainUrl.replace('%GoingTrainCln%',date.yyyymmdd());
-    // console.log('trainUrl:' ,trainUrl);
+    console.log('trainUrl:' ,trainUrl);
     return trainUrl;
 }
 
