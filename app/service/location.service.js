@@ -1,8 +1,7 @@
 (function(){
 
-    var app = angular.module('LocationService', []);
-
-    app.service('LocationService', LocationService);
+    angular.module('katarzis')
+    .service('LocationService', LocationService);
 
     function LocationService() {
       'ngInject';

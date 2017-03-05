@@ -1,8 +1,7 @@
 (function(){
 
-    var app = angular.module('UserService', []);
-
-    app.service('UserService', UserService);
+    angular.module('katarzis')
+    .service('UserService', UserService);
 
     function UserService() {
       'ngInject';
@@ -72,7 +71,6 @@
       }
 
       return {
-
         saveDrivePlan: saveDrivePlan,
         getCurrDestStationId: getCurrDestStationId,
         getCurrOriginStationId: getCurrOriginStationId,

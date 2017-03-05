@@ -1,18 +1,18 @@
 (function () {
     'use strict';
-    var app = angular.module('selectStation', []);
+    angular.module('selectStation', [])
 
-    app.component('selectStation', {
+    .component('selectStation', {
         bindings: {
             direction: '=',
             onStationChange: '&'
         },
         templateUrl: 'components/selectStation/stationSelect.template.html',
-        controller: selectStationComponent,
+        controller: SelectStationComponent,
         controllerAs: 'vm'
     });
 
-    function selectStationComponent($scope, StationService, UserService) {
+    function SelectStationComponent($scope, StationService, UserService) {
         'ngInject';
         var vm = this;
         vm.stations = StationService.getStations();

@@ -4,12 +4,7 @@
             'katarzis',
             'toaster',
             'myModal',
-            'filters-module',
-            'selectStation',
-            'LocationService',
-            'UserService',
-            'UtilsService',
-            'StationService'
+            'selectStation'
         ]);
 
     app.config(['$httpProvider', function($httpProvider) {

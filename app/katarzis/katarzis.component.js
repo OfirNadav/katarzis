@@ -1,8 +1,8 @@
 (function () {
     'use strict';
-    var app = angular.module('katarzis', ['selectStation', 'myModal']);
+    angular.module('katarzis', ['selectStation', 'myModal'])
 
-    app.component('katarzisComponent', {
+    .component('katarzisComponent', {
         bindings: {},
         templateUrl: 'katarzis/katarzis.template.html',
         controller: katarzisComponent,
@@ -94,6 +94,10 @@
                 UtilsService.pop('אנא בחר תחנת יעד');
                 return false;
             }
+            if (!vm.reqTT.originStationId || vm.reqTT.destStationId === vm.reqTT.originStationId) {
+                UtilsService.pop('אנא בחר תחנת מוצא');
+                return false;
+            }
             if (vm.calculating) {
                 UtilsService.pop('סבלנות כפרה');
                 return false;
@@ -115,18 +119,16 @@
                 vm.calculating = true;
             });
 
+            vm.reqTT.date = new Date();
 
             StationService.getNextTrains(vm.reqTT).then(function (res) {
-                console.log('res ', res);
                 if (!vm.calculating) return;
                 // check the respond for error or data
-                if (res){
-                    vm.tt = res;
-                    if (vm.tt.nextTrains.length){
-                        vm.nextTrainTimes = UtilsService.countDownTimer(vm.tt.nextTrains);
-                    }  // else console.log('Train not found');
+                var nextTrains = res;
+                if (nextTrains){
+                    vm.nextTrainTimes = UtilsService.countDownTimer(nextTrains);
 
-                    vm.originName = StationService.getStationById(vm.tt.originStationId).name;
+                    vm.originName = StationService.getStationById(vm.reqTT.originStationId).name;
                     vm.calculating = false;
                     vm.newDrivePlan = false;
                 }
