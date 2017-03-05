@@ -599,7 +599,7 @@
         }
 
         function getTrainUrl(reqDrivePlan) {
-            var trainUrlTemplate = 'http://www.rail.co.il/apiinfo/api/Plan/GetRoutes?' +
+            var trainUrlTemplate = 'https://www.rail.co.il/apiinfo/api/Plan/GetRoutes?' +
                 'OId=%OriginStationId%' +
                 '&TId=%DestStationId%' +
                 '&Date=%Date%' +
